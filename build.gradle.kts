@@ -27,8 +27,6 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.webjars.npm:react:17.0.2")
-    implementation("org.webjars.npm:react-dom:17.0.2")
 }
 
 tasks.withType<KotlinCompile> {
