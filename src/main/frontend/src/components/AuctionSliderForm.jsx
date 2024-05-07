@@ -14,7 +14,7 @@ const Home = () => {
     };
 
     return (
-        <Slider {...settings} style={{ width: "75%", display: "flex", gap: 20 }}>
+        <Slider {...settings} style={{ width: "75%", display: "flex", alignItems: "center",justifyContent: "center", gap: 20 }}>
             <Slide />
             <Slide />
             <Slide />
