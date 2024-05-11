@@ -6,6 +6,6 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 object Bailiffs : IntIdTable() {
     val baiName = varchar("bai_name", 255)
     val baiSurname = varchar("bai_surname", 255)
-    val baiPhoneNumber = integer("bai_name")
+    val baiPhoneNumber = integer("bai_phone_number")
     val baiOfficeLocation = varchar("bai_office_location", 255)
 }

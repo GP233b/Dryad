@@ -8,9 +8,9 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 object Auctions: IntIdTable() {
-    val aucBaiId = reference("bai_id",Bailiffs)
+    val aucBaiId = reference("auc_bai_id",Bailiffs)
     val aucWinningPrice: Column<java.math.BigDecimal> = decimal("auc_winning_price", 19, 2)
     val aucWinnerId = reference("auc_winner_id", UsersData)
     val aucEndDate = datetime("auc_end_date")
-    val aucRelId = integer("auc_rel_id")
+    val aucRelId = reference("auc_rel_id",RealEstates)
 }

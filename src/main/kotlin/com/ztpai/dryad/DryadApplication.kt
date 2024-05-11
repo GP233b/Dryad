@@ -1,28 +1,34 @@
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+package com.ztpai.dryad
+
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
+
+@SpringBootApplication
+class DryadApplication
 
 fun main(args: Array<String>) {
-    val databaseName = "Licytacje"
-    val databaseUrl = "jdbc:postgresql://localhost:5432/$databaseName"
-    val databaseUser = "postgres"
-    val databasePassword = "admin"
 
-    try {
-        Database.connect(
-                url = databaseUrl,
-                driver = "org.postgresql.Driver",
-                user = databaseUser,
-                password = databasePassword
-        )
-        transaction {
-            val result = org.jetbrains.exposed.sql.transactions.TransactionManager.current().exec("SELECT * FROM Users_data")
-            println("Rezultat zapytania:")
-            println(result)
+    runApplication<DryadApplication>(*args)
+
+
+   /* transaction {
+        // Znajdź użytkownika o danym ID
+        val userId = 1
+        val user = UserData.findById(userId)
+
+        // Jeśli użytkownik istnieje, wyprintuj jego dane
+        if (user != null) {
+            println("User Data for ID $userId:")
+            println("Name: ${user.urdName}")
+            println("Surname: ${user.urdSurname}")
+            println("Date of Birth: ${user.urdDateOfBirth}")
+            println("PESEL: ${user.urdPesel}")
+            println("Email: ${user.urdEmail}")
+            println("Password: ${user.urdPassword}")
+        } else {
+            println("User with ID $userId not found.")
         }
-
-        println("Połączono z bazą danych: $databaseName")
-    } catch (e: Exception) {
-        println("Błąd podczas łączenia z bazą danych: ${e.message}")
     }
+*/
+
 }
