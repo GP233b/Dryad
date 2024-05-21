@@ -1,18 +1,38 @@
 import React, { useState } from 'react';
 import COLORS from "../styles/colors";
 import Logo from "../logo.png";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [messages, setMessages] = useState([]);
+    const [credentialsError, setCredentialsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
+
+    const [signupMessage, setSignupMessage] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log('Email:', email);
-            console.log('Password:', password);
-        } catch (error) {
-            console.error('Login error:', error);
+            const response = await axios.post("http://localhost:8080/auth/login",
+                {
+                    email,
+                    password
+                });
+            const token = response.data.token;
+            localStorage.setItem('token', token);
+            //     go to page
+            navigate("/");
+
+        } catch(error) {
+            if(error.response && error.response.status === 403) {
+                setErrorMessage('Incorrect username or password');
+                setCredentialsError(true);
+            }
+            else
+                setErrorMessage('Login error, try later');
         }
     };
 
@@ -34,7 +54,7 @@ function LoginForm() {
     };
 
     const logoStyle = {
-        width: "400px", // Dostosuj szerokość logo według potrzeb
+        width: "400px",
     };
 
     return (

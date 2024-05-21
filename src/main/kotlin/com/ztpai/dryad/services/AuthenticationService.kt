@@ -10,6 +10,7 @@ import com.ztpai.dryad.repositories.toDto
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -21,30 +22,33 @@ class AuthenticationService(
         private val passwordEncoder: PasswordEncoder
 ) {
     fun signup(input: RegisterUserDto): UserDto? {
-
-
-        return transaction {   UserData.new {
-            urdEmail = input.email
-            urdName = input.name
-            urdSurname = input.surname
-            urdPesel = input.pesel
-            urdPassword = input.password
-
-        }.toDto()
-
+        return transaction {
+            val hashedPassword = passwordEncoder.encode(input.password)
+            val newUser = UserData.new {
+                urdEmail = input.email
+                urdName = input.name
+                urdSurname = input.surname
+                urdPesel = input.pesel
+                urdPassword = hashedPassword
+            }
+            newUser.toDto()
         }
-
-
-
     }
 
+
     fun authenticate(input: LoginUserDto): UserData? {
-        authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(
-                        input.email,
-                        input.password
-                )
-        )
+        try {
+            authenticationManager.authenticate(
+                    UsernamePasswordAuthenticationToken(
+                            input.email,
+                            input.password
+                    )
+            )
+        } catch (e: AuthenticationException) {
+
+            println("Wystąpił błąd podczas uwierzytelniania: ${e.message}")
+            return null
+        }
         return userRepository.findByEmail(input.email)
 
     }

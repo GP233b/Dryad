@@ -1,13 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import COLORS from "../styles/colors";
 import Logo from "../logo.png";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const Header = ({ title }) => {
     const [hoveredButton, setHoveredButton] = useState(null);
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('No token found in localStorage');
+                    return;
+                }
+
+                const response = await axios.get("http://localhost:8080/users/me", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setUser(response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleNavigation = (path) => {
         console.log("Przekierowanie na:", path);
         window.location.href = path;
+    };
+
+    const handleLogout = () => {
+        console.log("Logging out");
+        localStorage.removeItem('token');
+        window.location.href = "/login";
+    };
+
+    const handleProfileClick = () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate("/profile");
+        } else {
+            navigate("/login");
+        }
     };
 
     const buttonStyle = {
@@ -34,11 +76,45 @@ const Header = ({ title }) => {
     };
 
     const logoStyle = {
-        width: "400px", // Dostosuj szerokość logo według potrzeb
+        width: "400px",
+    };
+
+    const headerStyle = {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "20px",
+        position: "relative" // To position the logout button absolutely within the header
+    };
+
+    const logoutButtonStyle = {
+        position: "absolute",
+        top: "10px",
+        left: "10px",
+        ...buttonStyle
+    };
+
+    const welcomeStyle = {
+        position: "absolute",
+        top: "10px",
+        right: "10px",
+        textAlign: "right",
+        color: COLORS.PRIMARY
     };
 
     return (
-        <header style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}>
+        <header style={headerStyle}>
+            <button
+                onClick={handleLogout}
+                style={{ ...logoutButtonStyle, ...(hoveredButton === "LOGOUT" && buttonHoverStyle) }}
+                onMouseEnter={() => handleMouseEnter("LOGOUT")}
+                onMouseLeave={handleMouseLeave}
+            >
+                LOGOUT
+            </button>
+            <div style={welcomeStyle}>
+                {user && `WITAJ ${user.urdName} ${user.urdSurname}`}
+            </div>
             <div style={logoStyle}>
                 <img src={Logo} alt="Logo" style={{ width: "100%" }} />
             </div>
@@ -76,7 +152,7 @@ const Header = ({ title }) => {
                     </li>
                     <li>
                         <button
-                            onClick={() => handleNavigation("/login")}
+                            onClick={handleProfileClick}
                             style={{ ...buttonStyle, ...(hoveredButton === "PROFILE" && buttonHoverStyle) }}
                             onMouseEnter={() => handleMouseEnter("PROFILE")}
                             onMouseLeave={handleMouseLeave}

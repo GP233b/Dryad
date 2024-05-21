@@ -6,6 +6,7 @@ import com.ztpai.dryad.entities.UserData
 import com.ztpai.dryad.repositories.UserDto
 import com.ztpai.dryad.services.AuthenticationService
 import com.ztpai.dryad.services.JwtService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,12 +25,12 @@ class AuthenticationController(private val jwtService: JwtService, private val a
     }
 
     @PostMapping("/login")
-    fun authenticate(@RequestBody loginUserDto: LoginUserDto?): ResponseEntity<LoginResponse> {
-        val authenticatedUser: UserData? = authenticationService.authenticate(loginUserDto!!)
+    fun authenticate(@RequestBody loginUserDto: LoginUserDto): ResponseEntity<out Any> {
+        val authenticatedUser: UserData? = authenticationService.authenticate(loginUserDto)
         val jwtToken = if (authenticatedUser != null) {
             jwtService.generateToken(authenticatedUser as UserDetails)
         } else {
-            null
+            return ResponseEntity<String>("Access Denied", HttpStatus.FORBIDDEN)
         }
 
         val loginResponse = LoginResponse().apply {
@@ -39,6 +40,9 @@ class AuthenticationController(private val jwtService: JwtService, private val a
         return ResponseEntity.ok<LoginResponse>(loginResponse)
     }
 }
+
+
+
 
 class LoginResponse {
 

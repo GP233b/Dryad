@@ -7,5 +7,4 @@ class RegisterUserDto {
      var name: String = ""
      var surname: String =""
      var pesel: String =""
-
 }

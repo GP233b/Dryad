@@ -26,6 +26,12 @@ class UserRepository {
         }
     }
 
+    fun findAll(): List<UserData>{
+        return transaction {
+            UserData.all().toList()
+        }
+    }
+
     fun deleteById(id: Int) {
         transaction {
             val user = UserData.findById(id)
