@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import HeaderForm from "../components/HeaderForm";
 import AuctionItem from "../components/AuctionItem";
+import BailiffInfo from "../components/BailiffInfo";
 import axios from "axios";
 
 function AuctionPage() {
@@ -21,26 +22,38 @@ function AuctionPage() {
         fetchAuctionData();
     }, [auctionId]);
 
-    if (!auctionData) {
-        return <div>Loading...</div>;
-    }
-
-    const { auction, bailiff, pictures, realEstate } = auctionData;
+    const containerStyle = {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        gap: "20px",
+        padding: "20px"
+    };
 
     return (
-        <div style={{ background: "#D9D9D9", minHeight: "100vh" }}>
+        <div style={{background: "#D9D9D9", minHeight:"100vh"}}>
             <HeaderForm />
-            <div style={{ display: "flex", justifyContent: "center" }}>
-                <AuctionItem
-                    imageSrc={pictures.length > 0 ? pictures[0].picture : ''}
-                    title={`Auction ${auction.id}`}
-                    description={realEstate.description}
-                    date={auction.endDate}
-                    highestPrice={auction.winningPrice}
-                    księgaWieczysta={realEstate.landAndMortgageRegisterNumber}
-                    cenaOszacowana={realEstate.estimatedPrice}
-                    geoportalNr={realEstate.geoportalNumber}
-                />
+            <div style={containerStyle}>
+                {auctionData && (
+                    <>
+                        <AuctionItem
+                            images={auctionData.pictures.map(pic => process.env.PUBLIC_URL + pic.picture)}
+
+                            description={auctionData.realEstate.description}
+                            date={auctionData.auction.endDate}
+                            highestPrice={auctionData.auction.winningPrice}
+                            księgaWieczysta={auctionData.realEstate.landAndMortgageRegisterNumber}
+                            cenaOszacowana={auctionData.realEstate.estimatedPrice}
+                            geoportalNr={auctionData.realEstate.geoportalNumber}
+                        />
+                        <BailiffInfo
+                            name={auctionData.bailiff.name}
+                            surname={auctionData.bailiff.surname}
+                            phoneNumber={auctionData.bailiff.phoneNumber}
+                            officeLocation={auctionData.bailiff.officeLocation}
+                        />
+                    </>
+                )}
             </div>
         </div>
     );

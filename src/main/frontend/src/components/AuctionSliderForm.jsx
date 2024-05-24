@@ -1,10 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import Logo from "../logo.png";
+import axios from "axios";
+import { Link } from 'react-router-dom';
 
 const Home = () => {
+    const [auctions, setAuctions] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchAuctions = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/auctions');
+                console.log('Auctions fetched:', response.data); // Debug log
+                setAuctions(response.data);
+            } catch (error) {
+                console.error('Error fetching auctions:', error);
+            } finally {
+                setLoading(false); // Mark loading as false after data is fetched
+            }
+        };
+
+        fetchAuctions();
+    }, []);
+
     var settings = {
         dots: true,
         infinite: true,
@@ -14,17 +34,27 @@ const Home = () => {
     };
 
     return (
-        <Slider {...settings} style={{ width: "75%", display: "flex", alignItems: "center",justifyContent: "center", gap: 20 }}>
-            <Slide />
-            <Slide />
-            <Slide />
-            <Slide />
-            <Slide />
-        </Slider>
+        <div style={{ width: "75%", margin: "0 auto" }}>
+            {loading ? (
+                <div>Loading...</div>
+            ) : (
+                <Slider {...settings} style={{ margin: "20px auto" }}>
+                    {auctions.map((auction) => (
+                        <Slide
+                            key={auction.auction.id}
+                            image={auction.pictures[0]?.picture}
+                            endDate={auction.auction.endDate}
+                            highestPrice={auction.auction.winningPrice}
+                            auctionId={auction.auction.id}
+                        />
+                    ))}
+                </Slider>
+            )}
+        </div>
     );
 }
 
-const Slide = ({ onClick }) => {
+const Slide = ({ image, endDate, highestPrice, auctionId }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const containerStyle = {
@@ -45,23 +75,23 @@ const Slide = ({ onClick }) => {
         marginBottom: "10px"
     };
 
-    const handleClick = () => {
-        if (onClick) {
-            onClick();
-        }
+    const highestPriceStyle = {
+        color: "red",
+        fontWeight: "bold"
     };
 
     return (
-        <div
-            style={{ ...containerStyle }}
-            onClick={handleClick}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            <img src={Logo} alt="Auction" style={{ ...imageStyle }} />
-            <div>AUKCJA NAZWA</div>
-            <div>31.12.2025</div>
-        </div>
+        <Link to={`/auction/${auctionId}`} style={{ textDecoration: "none", color: "inherit" }}>
+            <div
+                style={containerStyle}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                <img src={image} alt="Auction" style={{ ...imageStyle }} />
+                <div style={{ color: "black" }}>End Date: {new Date(endDate).toLocaleDateString()}</div>
+                <div style={highestPriceStyle}>Highest Bid: {highestPrice} PLN</div>
+            </div>
+        </Link>
     );
 }
 

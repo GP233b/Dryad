@@ -60,4 +60,29 @@ class AuctionController {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
+
+    @GetMapping
+    fun getAllAuctions(): ResponseEntity<List<AuctionResponse>> {
+        val auctions = transaction {
+            Auction.all().map { auction ->
+                val bailiff = auction.bailiff
+                val pictures = auction.realEstatePicture.map {
+                    RealEstatePictureDTO(it.id.value, it.repPicture)
+                }
+                val realEstate = auction.realEstate
+
+                AuctionResponse(
+                        auction = AuctionDTO(auction.id.value, auction.aucWinningPrice, auction.aucEndDate.toString()),
+                        bailiff = BailiffDTO(bailiff.id.value, bailiff.baiName, bailiff.baiSurname, bailiff.baiPhoneNumber, bailiff.baiOfficeLocation),
+                        pictures = pictures,
+                        realEstate = RealEstateDTO(
+                                realEstate.id.value, realEstate.relStartingPrice, realEstate.relEstimatedPrice,
+                                realEstate.relLandAndMortgageRegisterNumber, realEstate.relGeoportalNumber, realEstate.relDescription
+                        )
+                )
+            }
+        }
+
+        return ResponseEntity(auctions, HttpStatus.OK)
+    }
 }
