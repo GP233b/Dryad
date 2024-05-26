@@ -1,12 +1,11 @@
 package com.ztpai.dryad.controller
 
 import com.ztpai.dryad.entities.Auction
+import com.ztpai.dryad.entities.UserData
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
 data class AuctionResponse(
@@ -17,6 +16,11 @@ data class AuctionResponse(
         val winnerId: Int
 )
 
+
+data class NewPriceRequest(
+        val newPrice: BigDecimal,
+        val userId: Int
+)
 data class AuctionDTO(
         val id: Int,
         val winningPrice: BigDecimal,
@@ -120,4 +124,36 @@ class AuctionController {
 
         return ResponseEntity.ok(auctions)
     }
+
+
+    @PutMapping("/{id}/updatePrice")
+    fun updateAuctionPrice(@PathVariable id: Int, @RequestBody request: NewPriceRequest): ResponseEntity<String> {
+        return try {
+            transaction {
+                val auction = Auction.findById(id) ?: return@transaction ResponseEntity.notFound().build()
+
+                if (request.newPrice <= BigDecimal.ZERO || request.newPrice.scale() > 2) {
+                    return@transaction ResponseEntity.badRequest().body("Invalid price format.")
+                }
+
+                val user = UserData.findById(request.userId) ?: return@transaction ResponseEntity.notFound().build()
+
+                if (request.newPrice > auction.aucWinningPrice) {
+                    auction.aucWinningPrice = request.newPrice
+                    auction.userData = user
+                    auction.flush()
+                    ResponseEntity.ok("Auction price updated successfully.")
+                } else {
+                    ResponseEntity.badRequest().body("New price must be higher than the current winning price.")
+                }
+            }
+        } catch (e: Exception) {
+            println("Error occurred: ${e.message}")
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the auction price.")
+        }
+    }
+
+
+
+
 }

@@ -19,7 +19,7 @@ function NewPriceInput({ onSubmit }) {
 
         // Sprawdzenie czy wprowadzona wartość nie jest mniejsza niż jeden grosz
         if (parseFloat(newPrice) >= 0.01) {
-            onSubmit(newPrice);
+            onSubmit(newPrice); // Przekazanie nowej ceny do funkcji onSubmit
             setNewPrice('');
         } else {
             alert('The price must be at least 0.01 PLN');

@@ -23,6 +23,7 @@ function LoginForm() {
                 });
             const token = response.data.token;
             localStorage.setItem('token', token);
+
             //     go to page
             navigate("/");
 
