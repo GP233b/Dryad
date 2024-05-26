@@ -14,7 +14,14 @@ const Home = () => {
             try {
                 const response = await axios.get('http://localhost:8080/auctions');
                 console.log('Auctions fetched:', response.data); // Debug log
-                setAuctions(response.data);
+
+                // Filtrujemy aukcje, aby wyświetlać tylko te, które się jeszcze nie zakończyły
+                const activeAuctions = response.data.filter(auction => new Date(auction.auction.endDate) > new Date());
+
+                // Przycinamy tablicę do 4 aukcji
+                const limitedAuctions = activeAuctions.slice(0, 4);
+
+                setAuctions(limitedAuctions);
             } catch (error) {
                 console.error('Error fetching auctions:', error);
             } finally {

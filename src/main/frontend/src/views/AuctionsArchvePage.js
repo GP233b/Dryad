@@ -1,17 +1,17 @@
 import React from 'react';
 import HeaderForm from "../components/HeaderForm";
-import AuctionSliderForm from '../components/AuctionSliderForm';
-import AuctionItems from "../components/AuctionItems";
 
-function AuctionsPage() {
+import AuctionArchiveItems from "../components/AuctionArchiveItems";
+
+function AuctionsArchvePage() {
     return (
         <div style={{ background: "#D9D9D9", minHeight: "100vh" }}>
             <HeaderForm />
             <div style={{ display: "flex", justifyContent: "center" }}>
-                <AuctionItems />
+                <AuctionArchiveItems/>
             </div>
         </div>
     );
 }
 
-export default AuctionsPage;
+export default AuctionsArchvePage;

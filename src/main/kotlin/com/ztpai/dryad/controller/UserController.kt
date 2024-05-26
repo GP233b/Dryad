@@ -1,9 +1,12 @@
 package com.ztpai.dryad.controller
 
+import com.ztpai.dryad.entities.Auction
+import com.ztpai.dryad.entities.Auctions
 import com.ztpai.dryad.entities.UserData
 import com.ztpai.dryad.repositories.UserDto
 import com.ztpai.dryad.repositories.UserRepository
 import com.ztpai.dryad.repositories.toDto
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -49,4 +52,39 @@ class UserController(){
         return ResponseEntity.ok(users)
     }
 
+    @RequestMapping("/{userId}/won-auctions")
+    fun getWonAuctions(@PathVariable userId: Int): ResponseEntity<List<AuctionResponse>> {
+        val wonAuctions = transaction {
+            Auction.find { Auctions.aucWinnerId eq userId }
+                    .map { auction ->
+                        val bailiff = auction.bailiff
+                        val pictures = auction.realEstatePicture.map {
+                            RealEstatePictureDTO(it.id.value, it.repPicture)
+                        }
+                        val realEstate = auction.realEstate
+
+                        AuctionResponse(
+                                auction = AuctionDTO(
+                                        auction.id.value,
+                                        auction.aucWinningPrice,
+                                        auction.aucEndDate.toString(),
+                                        auction.userData.id.value
+                                ),
+                                bailiff = BailiffDTO(bailiff.id.value, bailiff.baiName, bailiff.baiSurname, bailiff.baiPhoneNumber, bailiff.baiOfficeLocation),
+                                pictures = pictures,
+                                realEstate = RealEstateDTO(
+                                        realEstate.id.value,
+                                        realEstate.relStartingPrice,
+                                        realEstate.relEstimatedPrice,
+                                        realEstate.relLandAndMortgageRegisterNumber,
+                                        realEstate.relGeoportalNumber,
+                                        realEstate.relDescription
+                                ),
+                                winnerId = auction.userData.id.value
+                        )
+                    }
+        }
+
+        return ResponseEntity(wonAuctions, HttpStatus.OK)
+    }
 }
