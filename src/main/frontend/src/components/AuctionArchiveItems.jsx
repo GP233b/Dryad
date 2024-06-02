@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Archive = () => {
     const [auctions, setAuctions] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [auctionsPerPage] = useState(3); // Zmiana na 3 licytacje na stronie
+    const [auctionsPerPage] = useState(3); // 3 auctions per page
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchAuctions = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/auctions');
-                console.log('Auctions fetched:', response.data); // Debug log
+                console.log('Auctions fetched:', response.data);
                 setAuctions(response.data);
             } catch (error) {
                 console.error('Error fetching auctions:', error);
             } finally {
-                setLoading(false); // Mark loading as false after data is fetched
+                setLoading(false);
             }
         };
 
@@ -45,6 +45,7 @@ const Home = () => {
                             endDate={auction.auction.endDate}
                             highestPrice={auction.auction.winningPrice}
                             auctionId={auction.auction.id}
+                            auctionName={auction.auction.name}
                         />
                     ))}
                     <Pagination
@@ -58,7 +59,7 @@ const Home = () => {
     );
 }
 
-const AuctionItem = ({ image, endDate, highestPrice, auctionId }) => {
+const AuctionItem = ({ image, endDate, highestPrice, auctionId, auctionName }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const containerStyle = {
@@ -101,6 +102,7 @@ const AuctionItem = ({ image, endDate, highestPrice, auctionId }) => {
               onMouseLeave={() => setIsHovered(false)}>
             <img src={image} alt="Auction" style={imageStyle} />
             <div style={infoStyle}>
+                <div style={{ color: "black", fontSize: "larger", fontWeight: "bold" }}>{auctionName}</div>
                 <div style={{ color: "black" }}>End Date: {new Date(endDate).toLocaleDateString()}</div>
                 <div style={highestPriceStyle}>Highest Bid: {highestPrice} PLN</div>
             </div>
@@ -130,4 +132,5 @@ const Pagination = ({ auctionsPerPage, totalAuctions, paginate }) => {
     );
 }
 
-export default Home;
+export default Archive;
+

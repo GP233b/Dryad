@@ -66,19 +66,21 @@ const Slide = ({ image, endDate, highestPrice, auctionId, auctionName }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const containerStyle = {
-        width: 250,
-        height: 250,
+        width: "250px",
+        height: "250px",
         background: isHovered ? "#f2f2f2" : "#D9D9D9",
         transition: "background-color 0.3s",
         borderRadius: "10px",
         padding: "20px",
         cursor: "pointer",
         textAlign: "center",
-        boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.1)"
+        boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.1)",
+        marginRight: "20px" // Dodany odstęp między elementami slidera
     };
 
     const imageStyle = {
         width: "100%",
+        height: "auto", // Dodane, aby obrazy zachowywały proporcje
         borderRadius: "10px",
         marginBottom: "10px"
     };

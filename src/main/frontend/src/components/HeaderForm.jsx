@@ -46,6 +46,7 @@ const Header = ({ title }) => {
     const handleLogout = () => {
         console.log("Logging out");
         localStorage.removeItem('token');
+        localStorage.removeItem('role');
         window.location.href = "/login";
     };
 
@@ -59,8 +60,8 @@ const Header = ({ title }) => {
     };
 
     const buttonStyle = {
-        padding: "15px 25px",
-        fontSize: "16px",
+        padding: "10px 15px", // Zmniejszono padding przycisku
+        fontSize: "14px", // Zmniejszono font-size przycisku
         backgroundColor: COLORS.PRIMARY,
         color: "#fff",
         border: "none",
@@ -82,7 +83,9 @@ const Header = ({ title }) => {
     };
 
     const logoStyle = {
-        width: "400px",
+        width: "30%", // Zmieniono szerokość logo na jednostki procentowe
+        maxWidth: "400px",
+        minWidth: "10px"
     };
 
     const headerStyle = {
@@ -90,22 +93,23 @@ const Header = ({ title }) => {
         flexDirection: "column",
         alignItems: "center",
         gap: "20px",
-        position: "relative" // To position the logout button absolutely within the header
+        position: "relative"
     };
 
     const logoutButtonStyle = {
         position: "absolute",
-        top: "10px",
-        left: "10px",
+        top: "1vw", // Zmieniono top na jednostki procentowe
+        left: "1vw", // Zmieniono left na jednostki procentowe
         ...buttonStyle
     };
 
     const welcomeStyle = {
         position: "absolute",
-        top: "10px",
-        right: "10px",
+        top: "1vw", // Zmieniono top na jednostki procentowe
+        right: "1vw", // Zmieniono right na jednostki procentowe
         textAlign: "right",
-        color: COLORS.PRIMARY
+        color: COLORS.PRIMARY,
+        fontSize: "14px" // Zmniejszono font-size dla napisu "WITAJ"
     };
 
     return (
@@ -118,22 +122,23 @@ const Header = ({ title }) => {
             >
                 LOGOUT
             </button>
-            <div style={welcomeStyle}>
+            <div style={{ ...welcomeStyle, fontSize: "12px" }}>
                 {user && `WITAJ ${user.urdName} ${user.urdSurname}`}
                 {isAdmin && (
                     <button
                         onClick={() => handleNavigation("/add-auction")}
-                        style={{ ...buttonStyle, marginLeft: "20px" }}
+                        style={{ ...buttonStyle, marginLeft: "0.5em", padding: "8px 12px" }}
                     >
                         DODAJ AUKCJE
                     </button>
                 )}
             </div>
+
             <div style={logoStyle}>
                 <img src={Logo} alt="Logo" style={{ width: "100%" }} />
             </div>
             <nav>
-                <ul style={{ listStyle: "none", display: "flex", gap: "20px" }}>
+                <ul style={{ listStyle: "none", display: "flex", gap: "2vw" }}>
                     <li>
                         <button
                             onClick={() => handleNavigation("/")}

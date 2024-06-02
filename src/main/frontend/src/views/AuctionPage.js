@@ -15,12 +15,15 @@ function AuctionPage() {
     useEffect(() => {
         const fetchAuctionData = async () => {
             try {
-                const userResponse = await axios.get('http://localhost:8080/users/me', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                const userId = userResponse.data.id;
+                let userId = null;
+                if (token) {
+                    const userResponse = await axios.get('http://localhost:8080/users/me', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    userId = userResponse.data.id;
+                }
 
                 const auctionResponse = await axios.get(`http://localhost:8080/auctions/${auctionId}`);
                 setAuctionData(auctionResponse.data);
@@ -38,6 +41,11 @@ function AuctionPage() {
 
     const handleNewPriceSubmit = async (newPrice) => {
         try {
+            if (!token) {
+                alert('Zaloguj się by dołączyć do licytacji');
+                return;
+            }
+
             const userResponse = await axios.get('http://localhost:8080/users/me', {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -49,7 +57,6 @@ function AuctionPage() {
                 newPrice: parseFloat(newPrice),
                 userId: userId
             });
-
 
             window.location.reload();
         } catch (error) {
@@ -84,16 +91,31 @@ function AuctionPage() {
                                 phoneNumber={auctionData.bailiff.phoneNumber}
                                 officeLocation={auctionData.bailiff.officeLocation}
                             />
-                            {isAuctionActive && token && !isWinning ? (
-                                <NewPriceInput onSubmit={handleNewPriceSubmit} />
+                            {isAuctionActive ? (
+                                token ? (
+                                    isWinning ? (
+                                        <div style={{ fontWeight: "bold" }}>AKTUALNIE PROWADZISZ</div>
+                                    ) : (
+                                        <NewPriceInput onSubmit={handleNewPriceSubmit} />
+                                    )
+                                ) : (
+                                    <div style={{ fontWeight: "bold" }}>Zaloguj się by dołączyć do licytacji</div>
+                                )
                             ) : (
-                                <div style={{ fontWeight: "bold" }}>AKTUALNIE PROWADZISZ</div>
-
+                                <div style={{ fontWeight: "bold" }}>Aukcja zakończona</div>
                             )}
                         </div>
                     </>
                 )}
             </div>
+            <style>{`
+                @media (max-width: 768px) {
+                    div > div {
+                        flex-direction: column;
+                        gap: 10px;
+                    }
+                }
+            `}</style>
         </div>
     );
 }
