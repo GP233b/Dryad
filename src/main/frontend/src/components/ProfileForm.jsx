@@ -87,27 +87,35 @@ const ProfileForm = () => {
         background: "#f2f2f2"
     };
 
+    const now = new Date();
+
     return (
         <div style={{ width: "75%", margin: "0 auto" }}>
-            <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Twoje Wygrane Licytacje</h2>
+            <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Licytacje w których bierzesz udział</h2>
             {wonAuctions.length === 0 ? (
                 <div>No won auctions</div>
             ) : (
-                wonAuctions.map(auction => (
-                    <Link
-                        key={auction.auction.id}
-                        to={`/auction/${auction.auction.id}`}
-                        style={{ ...containerStyle, ...(isHovered && hoveredStyle) }}
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
-                    >
-                        <img src={auction.pictures[0]?.picture} alt="Auction" style={imageStyle} />
-                        <div style={infoStyle}>
-                            <div style={{ color: "black" }}>End Date: {new Date(auction.auction.endDate).toLocaleDateString()}</div>
-                            <div style={highestPriceStyle}>Highest Bid: {auction.auction.winningPrice} PLN</div>
-                        </div>
-                    </Link>
-                ))
+                wonAuctions.map(auction => {
+                    const endDate = new Date(auction.auction.endDate);
+                    const isPast = endDate <= now;
+
+                    return (
+                        <Link
+                            key={auction.auction.id}
+                            to={`/auction/${auction.auction.id}`}
+                            style={{ ...containerStyle, ...(isHovered && hoveredStyle) }}
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                        >
+                            <img src={auction.pictures[0]?.picture} alt="Auction" style={imageStyle} />
+                            <div style={infoStyle}>
+                                <div style={{ color: "black" }}>End Date: {endDate.toLocaleDateString()}</div>
+                                <div style={highestPriceStyle}>Highest Bid: {auction.auction.winningPrice} PLN</div>
+                                {isPast && <div style={{ color: "green" }}>You won!</div>}
+                            </div>
+                        </Link>
+                    );
+                })
             )}
         </div>
     );

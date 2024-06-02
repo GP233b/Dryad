@@ -36,6 +36,7 @@ class AuthenticationController(private val jwtService: JwtService, private val a
         val loginResponse = LoginResponse().apply {
             token = jwtToken
             expiresIn = jwtService.expirationTime
+            role = authenticatedUser.urdRole
         }
         return ResponseEntity.ok<LoginResponse>(loginResponse)
     }
@@ -48,4 +49,5 @@ class LoginResponse {
 
     var token: String? = null
     var expiresIn: Long = 0
+    var role: String? = null
 }

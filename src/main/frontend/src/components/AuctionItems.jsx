@@ -45,6 +45,7 @@ const Home = () => {
                             endDate={auction.auction.endDate}
                             highestPrice={auction.auction.winningPrice}
                             auctionId={auction.auction.id}
+                            auctionName={auction.auction.name}
                         />
                     ))}
                     <Pagination
@@ -58,7 +59,7 @@ const Home = () => {
     );
 }
 
-const AuctionItem = ({ image, endDate, highestPrice, auctionId }) => {
+const AuctionItem = ({ image, endDate, highestPrice, auctionId,auctionName }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const containerStyle = {
@@ -101,6 +102,7 @@ const AuctionItem = ({ image, endDate, highestPrice, auctionId }) => {
               onMouseLeave={() => setIsHovered(false)}>
             <img src={image} alt="Auction" style={imageStyle} />
             <div style={infoStyle}>
+                <div style={{ color: "black", fontSize: "larger", fontWeight: "bold" }}>{auctionName}</div>
                 <div style={{ color: "black" }}>End Date: {new Date(endDate).toLocaleDateString()}</div>
                 <div style={highestPriceStyle}>Highest Bid: {highestPrice} PLN</div>
             </div>

@@ -1,5 +1,6 @@
 package com.ztpai.dryad
 
+
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
@@ -8,8 +9,37 @@ class DryadApplication
 
 fun main(args: Array<String>) {
 
-    runApplication<DryadApplication>(*args)
+   runApplication<DryadApplication>(*args)
 
+/*
+    val databaseName = "Licytacje"
+    val databaseUrl = "jdbc:postgresql://localhost:5432/$databaseName"
+    val databaseUser = "postgres"
+    val databasePassword = "admin"
+
+    try {
+        // Spróbuj nawiązać połączenie z bazą danych
+        Database.connect(
+                url = databaseUrl,
+                driver = "org.postgresql.Driver",
+                user = databaseUser,
+                password = databasePassword
+        )
+
+        transaction {
+            SchemaUtils.createMissingTablesAndColumns(Auctions,
+                    Bailiffs,
+                    HistoricalPrices,
+                    RealEstatePictures,
+                    RealEstates,
+                    UsersData)
+        }
+
+    } catch (e: Exception) {
+        // Jeśli wystąpił błąd podczas połączenia lub transakcji, wyświetl komunikat o błędzie
+        println("Błąd podczas łączenia z bazą danych: ${e.message}")
+    }
+    */
 
    /* transaction {
         // Znajdź użytkownika o danym ID

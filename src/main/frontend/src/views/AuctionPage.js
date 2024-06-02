@@ -10,6 +10,7 @@ function AuctionPage() {
     const { id: auctionId } = useParams();
     const [auctionData, setAuctionData] = useState(null);
     const token = localStorage.getItem('token');
+    const [isWinning, setIsWinning] = useState(false);
 
     useEffect(() => {
         const fetchAuctionData = async () => {
@@ -23,6 +24,10 @@ function AuctionPage() {
 
                 const auctionResponse = await axios.get(`http://localhost:8080/auctions/${auctionId}`);
                 setAuctionData(auctionResponse.data);
+
+                if (auctionResponse.data.auction.winnerId === userId) {
+                    setIsWinning(true);
+                }
             } catch (error) {
                 console.error('Error fetching auction data:', error);
             }
@@ -45,8 +50,8 @@ function AuctionPage() {
                 userId: userId
             });
 
-            const auctionResponse = await axios.get(`http://localhost:8080/auctions/${auctionId}`);
-            setAuctionData(auctionResponse.data);
+
+            window.location.reload();
         } catch (error) {
             console.error('Error updating auction price:', error);
         }
@@ -64,6 +69,7 @@ function AuctionPage() {
                             <AuctionItem
                                 images={auctionData.pictures.map(pic => process.env.PUBLIC_URL + pic.picture)}
                                 description={auctionData.realEstate.description}
+                                title={auctionData.auction.name}
                                 date={auctionData.auction.endDate}
                                 highestPrice={auctionData.auction.winningPrice}
                                 księgaWieczysta={auctionData.realEstate.landAndMortgageRegisterNumber}
@@ -78,7 +84,12 @@ function AuctionPage() {
                                 phoneNumber={auctionData.bailiff.phoneNumber}
                                 officeLocation={auctionData.bailiff.officeLocation}
                             />
-                            {isAuctionActive && token && <NewPriceInput onSubmit={handleNewPriceSubmit} />}
+                            {isAuctionActive && token && !isWinning ? (
+                                <NewPriceInput onSubmit={handleNewPriceSubmit} />
+                            ) : (
+                                <div style={{ fontWeight: "bold" }}>AKTUALNIE PROWADZISZ</div>
+
+                            )}
                         </div>
                     </>
                 )}

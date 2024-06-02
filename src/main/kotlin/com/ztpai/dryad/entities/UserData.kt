@@ -22,6 +22,7 @@ class UserData(id: EntityID<Int>) : IntEntity(id),UserDetails  {
     var urdSurname by UsersData.urdSurname
     var urdPesel by UsersData.urdPesel
     var urdEmail by UsersData.urdEmail
+    var urdRole by UsersData.urdRole
     var urdPassword by UsersData.urdPassword
 
 

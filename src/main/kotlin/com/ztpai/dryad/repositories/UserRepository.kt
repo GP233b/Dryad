@@ -45,7 +45,8 @@ data class UserDto(
         val urdEmail: String,
         val urdName: String,
         val urdSurname: String,
-        val urdPesel: String
+        val urdPesel: String,
+        val urdRole: String
 )
 
 fun UserData.toDto() = UserDto(
@@ -53,6 +54,7 @@ fun UserData.toDto() = UserDto(
         urdEmail = urdEmail,
         urdName = urdName,
         urdSurname = urdSurname,
-        urdPesel = urdPesel
+        urdPesel = urdPesel,
+        urdRole = urdRole
 )
 

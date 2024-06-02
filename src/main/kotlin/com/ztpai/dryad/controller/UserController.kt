@@ -66,6 +66,7 @@ class UserController(){
                         AuctionResponse(
                                 auction = AuctionDTO(
                                         auction.id.value,
+                                        auction.aucName,
                                         auction.aucWinningPrice,
                                         auction.aucEndDate.toString(),
                                         auction.userData.id.value

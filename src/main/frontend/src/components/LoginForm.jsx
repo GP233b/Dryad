@@ -22,7 +22,9 @@ function LoginForm() {
                     password
                 });
             const token = response.data.token;
+            const role = response.data.role;
             localStorage.setItem('token', token);
+            localStorage.setItem('role', role);
 
             //     go to page
             navigate("/");

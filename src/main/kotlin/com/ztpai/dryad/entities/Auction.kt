@@ -7,6 +7,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 class Auction(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Auction>(Auctions)
 
+    var aucName by Auctions.aucName
     var aucWinningPrice by Auctions.aucWinningPrice
     var aucEndDate by Auctions.aucEndDate
 

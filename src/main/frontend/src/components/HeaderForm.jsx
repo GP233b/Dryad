@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = ({ title }) => {
     const [hoveredButton, setHoveredButton] = useState(null);
     const [user, setUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,6 +31,11 @@ const Header = ({ title }) => {
         };
 
         fetchUserData();
+        // Check if the role is admin
+        const role = localStorage.getItem('role');
+        if (role === 'admin') {
+            setIsAdmin(true);
+        }
     }, []);
 
     const handleNavigation = (path) => {
@@ -114,6 +120,14 @@ const Header = ({ title }) => {
             </button>
             <div style={welcomeStyle}>
                 {user && `WITAJ ${user.urdName} ${user.urdSurname}`}
+                {isAdmin && (
+                    <button
+                        onClick={() => handleNavigation("/add-auction")}
+                        style={{ ...buttonStyle, marginLeft: "20px" }}
+                    >
+                        DODAJ AUKCJE
+                    </button>
+                )}
             </div>
             <div style={logoStyle}>
                 <img src={Logo} alt="Logo" style={{ width: "100%" }} />

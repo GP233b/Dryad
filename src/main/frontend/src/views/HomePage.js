@@ -9,6 +9,7 @@ function HomePage() {
             <div style={{ display: "flex", justifyContent: "center" }}>
                 <AuctionSliderForm />
             </div>
+
         </div>
     );
 }

@@ -8,6 +8,7 @@ import AuctionPage from "./views/AuctionPage";
 import AuctionsPage from "./views/AuctionsPage";
 import AuctionArchiveItems from "./components/AuctionArchiveItems";
 import AuctionsArchvePage from "./views/AuctionsArchvePage";
+import AddAuctionsPage from "./views/AddAuctionPage";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/Auction/:id" element={<AuctionPage/>} />
                 <Route path="/Auctions" element={<AuctionsPage/>} />
                 <Route path="/archive" element={<AuctionsArchvePage/>} />
+                <Route path="/add-auction" element={<AddAuctionsPage/>} />
             </Routes>
         </Router>
     );

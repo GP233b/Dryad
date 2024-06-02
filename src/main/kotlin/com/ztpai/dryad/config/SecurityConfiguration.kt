@@ -23,7 +23,8 @@ class SecurityConfiguration(
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/auctions/**").permitAll()  // Dodaj `/auctions/**`
+                .requestMatchers("/auth/**", "/auctions/**","/bailiffs/**" ,
+                        "/realestates/**","/realEstatePictures/**").permitAll()  // Dodaj `/auctions/**`
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
