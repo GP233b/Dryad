@@ -17,7 +17,7 @@ const Home = () => {
             } catch (error) {
                 console.error('Error fetching auctions:', error);
             } finally {
-                setLoading(false); // Mark loading as false after data is fetched
+                setLoading(false);
             }
         };
 

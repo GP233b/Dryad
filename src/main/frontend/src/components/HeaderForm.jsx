@@ -60,8 +60,8 @@ const Header = ({ title }) => {
     };
 
     const buttonStyle = {
-        padding: "10px 15px", // Zmniejszono padding przycisku
-        fontSize: "14px", // Zmniejszono font-size przycisku
+        padding: "10px 15px",
+        fontSize: "14px",
         backgroundColor: COLORS.PRIMARY,
         color: "#fff",
         border: "none",
@@ -83,7 +83,7 @@ const Header = ({ title }) => {
     };
 
     const logoStyle = {
-        width: "30%", // Zmieniono szerokość logo na jednostki procentowe
+        width: "30%",
         maxWidth: "400px",
         minWidth: "10px"
     };
@@ -98,18 +98,18 @@ const Header = ({ title }) => {
 
     const logoutButtonStyle = {
         position: "absolute",
-        top: "1vw", // Zmieniono top na jednostki procentowe
-        left: "1vw", // Zmieniono left na jednostki procentowe
+        top: "1vw",
+        left: "1vw",
         ...buttonStyle
     };
 
     const welcomeStyle = {
         position: "absolute",
-        top: "1vw", // Zmieniono top na jednostki procentowe
-        right: "1vw", // Zmieniono right na jednostki procentowe
+        top: "1vw",
+        right: "1vw",
         textAlign: "right",
         color: COLORS.PRIMARY,
-        fontSize: "14px" // Zmniejszono font-size dla napisu "WITAJ"
+        fontSize: "14px"
     };
 
     return (

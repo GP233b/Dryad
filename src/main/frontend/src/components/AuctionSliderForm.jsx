@@ -15,17 +15,17 @@ const Home = () => {
                 const response = await axios.get('http://localhost:8080/auctions');
                 console.log('Auctions fetched:', response.data); // Debug log
 
-                // Filtrujemy aukcje, aby wyświetlać tylko te, które się jeszcze nie zakończyły
+
                 const activeAuctions = response.data.filter(auction => new Date(auction.auction.endDate) > new Date());
 
-                // Przycinamy tablicę do 4 aukcji
+
                 const limitedAuctions = activeAuctions.slice(0, 4);
 
                 setAuctions(limitedAuctions);
             } catch (error) {
                 console.error('Error fetching auctions:', error);
             } finally {
-                setLoading(false); // Mark loading as false after data is fetched
+                setLoading(false);
             }
         };
 
@@ -53,7 +53,7 @@ const Home = () => {
                             endDate={auction.auction.endDate}
                             highestPrice={auction.auction.winningPrice}
                             auctionId={auction.auction.id}
-                            auctionName={auction.auction.name} // Dodane pole z nazwą aukcji
+                            auctionName={auction.auction.name}
                         />
                     ))}
                 </Slider>
@@ -75,12 +75,12 @@ const Slide = ({ image, endDate, highestPrice, auctionId, auctionName }) => {
         cursor: "pointer",
         textAlign: "center",
         boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.1)",
-        marginRight: "20px" // Dodany odstęp między elementami slidera
+        marginRight: "20px"
     };
 
     const imageStyle = {
         width: "100%",
-        height: "auto", // Dodane, aby obrazy zachowywały proporcje
+        height: "auto",
         borderRadius: "10px",
         marginBottom: "10px"
     };

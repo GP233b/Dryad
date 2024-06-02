@@ -26,7 +26,7 @@ data class NewPriceRequest(
 
 data class AuctionDTO(
         val id: Int,
-        val name: String,  // Dodane pole
+        val name: String,
         val winningPrice: BigDecimal,
         val endDate: String,
         val winnerId: Int
@@ -81,13 +81,13 @@ class AuctionController {
             }
             val realEstate = auction.realEstate
 
-            val winnerId = auction.userData?.id?.value ?: -1 // Jeśli auction.userData?.id?.value jest nullem, to ustawiamy winnerId na -1
+            val winnerId = auction.userData?.id?.value ?: -1
 
             ResponseEntity.ok(
                     AuctionResponse(
                             auction = AuctionDTO(
                                     auction.id.value,
-                                    auction.aucName,  // Dodane pole
+                                    auction.aucName,
                                     auction.aucWinningPrice,
                                     auction.aucEndDate.toString(),
                                     winnerId
@@ -116,12 +116,12 @@ class AuctionController {
                 }
                 val realEstate = auction.realEstate
 
-                val winnerId = auction.userData?.id?.value ?: -1 // Jeśli auction.userData?.id?.value jest nullem, to ustawiamy winnerId na -1
+                val winnerId = auction.userData?.id?.value ?: -1
 
                 AuctionResponse(
                         auction = AuctionDTO(
                                 auction.id.value,
-                                auction.aucName,  // Dodane pole
+                                auction.aucName,
                                 auction.aucWinningPrice,
                                 auction.aucEndDate.toString(),
                                 winnerId
@@ -181,7 +181,7 @@ class AuctionController {
                 println(addBailiff)
                 println(addUserData)
                 println(addRealEstate)
-                ResponseEntity.ok(mapOf("id" to 0)) // Zwrócenie wartości 0 w przypadku błędu
+                ResponseEntity.ok(mapOf("id" to 0))
             } else {
                 // Rozdzielanie daty na części
                 val parts = request.endDate.split("-")
@@ -203,7 +203,7 @@ class AuctionController {
                     userData = addUserData
                     realEstate = addRealEstate
                 }
-                ResponseEntity.ok(mapOf("id" to auctionNew.id.value)) // Zwrócenie rzeczywistego ID aukcji
+                ResponseEntity.ok(mapOf("id" to auctionNew.id.value))
             }
         }
     }

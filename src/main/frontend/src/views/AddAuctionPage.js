@@ -9,7 +9,7 @@ function AddAuctionsPage() {
     useEffect(() => {
         const role = localStorage.getItem('role');
         if (role !== 'admin') {
-            navigate('/not-authorized'); // przekierowanie na inną stronę np. 'not-authorized'
+            navigate('/not-authorized');
         }
     }, [navigate]);
 

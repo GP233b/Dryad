@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Ensure you have react-router-dom installed and configured
-import axios from 'axios'; // Ensure you have axios installed
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import COLORS from "../styles/colors";
 import Logo from "../logo.png";
 

@@ -24,7 +24,7 @@ class SecurityConfiguration(
         http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**", "/auctions/**","/bailiffs/**" ,
-                        "/realestates/**","/realEstatePictures/**").permitAll()  // Dodaj `/auctions/**`
+                        "/realestates/**","/realEstatePictures/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

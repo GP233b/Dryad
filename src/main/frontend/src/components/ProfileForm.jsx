@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const ProfileForm = () => {
     const [user, setUser] = useState(null);
     const [wonAuctions, setWonAuctions] = useState([]);
-    const [isHovered, setIsHovered] = useState(false); // Dodajemy stan isHovered
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {

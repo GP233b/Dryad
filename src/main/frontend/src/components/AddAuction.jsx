@@ -41,7 +41,7 @@ const AddAuction = () => {
 
     const handlePriceChange = (setter) => (event) => {
         const value = event.target.value;
-        const regex = /^\d*\.?\d{0,2}$/; // Regex to allow up to 2 decimal places
+        const regex = /^\d*\.?\d{0,2}$/;
         if (regex.test(value) || value === '') {
             setter(value);
         }
@@ -101,7 +101,7 @@ const AddAuction = () => {
                 }
             );
 
-            // Add Real Estate Pictures
+
 
             const auctionId = auctionResponse.data.id;
             console.log(auctionId)

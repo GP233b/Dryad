@@ -8,7 +8,7 @@ function NewPriceInput({ onSubmit }) {
     const handleChange = (e) => {
         const value = e.target.value;
 
-        // Sprawdzenie czy wprowadzona wartość jest liczbą i czy nie jest mniejsza niż jeden grosz
+
         if (/^\d*\.?\d{0,2}$/.test(value)) {
             setNewPrice(value);
         }
@@ -17,9 +17,9 @@ function NewPriceInput({ onSubmit }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Sprawdzenie czy wprowadzona wartość nie jest mniejsza niż jeden grosz
+
         if (parseFloat(newPrice) >= 0.01) {
-            onSubmit(newPrice); // Przekazanie nowej ceny do funkcji onSubmit
+            onSubmit(newPrice);
             setNewPrice('');
         } else {
             alert('The price must be at least 0.01 PLN');
