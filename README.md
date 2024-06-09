@@ -7,22 +7,23 @@ Dryad Auctions
     Browsing foreclosure auctions (current and completed)
     Checking information about auctions (plot number, Geoportal number, Land and Mortgage Register number, Bailiff information)
     Joining auctions
-    The application envisions 3 types of users:
     
+    The application envisions 3 types of users:
     Not logged in: can browse auctions
-    Logged in: can join auctions
-    Admin: adds new auctions
+    -Logged in: can join auctions
+    -Admin: adds new auctions
+    
     For authorization, it uses JWT (JSON Web Token).
     
     Technologies used:
-    
-    CSS
-    JavaScript
-    SpringBoot
-    React
-    PostgreSQL
-    Polish Version
+    -CSS
+    -JavaScript
+    -SpringBoot
+    -React
+    -PostgreSQL
 
+
+Polish Version
 
 Dryad Licytacje
 Założeniem tej strony jest:
