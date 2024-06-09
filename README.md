@@ -1,5 +1,5 @@
-    English Version
-    Dryad Auctions
+English Version
+Dryad Auctions
     
     The purpose of this site is:
     
